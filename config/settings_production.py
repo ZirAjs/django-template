@@ -1,6 +1,5 @@
 from datetime import timedelta
 from pathlib import Path
-
 import os
 from dotenv import load_dotenv
 
@@ -8,7 +7,8 @@ load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# Use Nginx to serve /static/ from /app/staticfiles/ (i.e. your STATIC_ROOT)
 
 
 # Quick-start development settings - unsuitable for production
@@ -16,12 +16,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", default="django-insecure-!@#@!@#@!@#")
+if SECRET_KEY == "django-insecure-!@#@!@#@!@#":
+    raise ValueError("Please set the DJANGO_SECRET_KEY environment variable.")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    # Add your production domain or IP address here
+    "localhost",
+]
 
 # Application definition
 
@@ -45,6 +49,9 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
+    ],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
     ],
 }
 
