@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "drf_yasg",
     "accounts",
+    "articles",
 ]
 
 REST_FRAMEWORK = {
@@ -44,7 +45,6 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
-    "PAGE_SIZE": 10,
 }
 
 AUTH_USER_MODEL = "accounts.User"
